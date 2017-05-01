@@ -13,12 +13,68 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace modular_daemon {
+    public class NotifyIconCommand : ICommand {
+        public event EventHandler CanExecuteChanged;
+
+        public bool CanExecute(object parameter) {
+            return true;
+        }
+
+        public void Execute(object parameter) {
+            var currentWindow = Application.Current.Windows[0];
+            currentWindow.Show();
+            currentWindow.WindowState = WindowState.Normal;
+        }
+    }
+
+    public class ExitAppCommand : ICommand {
+        public event EventHandler CanExecuteChanged;
+
+        public bool CanExecute(object parameter) {
+            return true;
+        }
+
+        public void Execute(object parameter) {
+            Application.Current.Windows[0].Close();
+        }
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
         public MainWindow() {
+            var config = Config.Load(@"config.xml");
+            this.DataContext = config.Services;
+            this.Title = config.Title;
+
             InitializeComponent();
+        }
+
+        private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e) {
+            foreach (var service in this.DataContext as List<Service>) {
+                service.EndProcess();
+                service.Close();
+            }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e) {
+            var textbox = sender as TextBox;
+            textbox.Focus();
+            textbox.CaretIndex = textbox.Text.Length;
+            textbox.ScrollToEnd();
+        }
+
+        protected override void OnStateChanged(EventArgs e) {
+            if (WindowState == WindowState.Minimized) {
+                this.Hide();
+            }
+            base.OnStateChanged(e);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e) {
+            var services = this.DataContext as List<Service>;
+            services[commandTabs.SelectedIndex].Restart();
         }
     }
 }

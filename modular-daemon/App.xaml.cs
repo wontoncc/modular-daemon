@@ -5,7 +5,9 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
+
 namespace modular_daemon {
+
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>

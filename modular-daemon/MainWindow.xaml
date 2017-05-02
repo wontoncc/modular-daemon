@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:modular_daemon"
+        xmlns:loc="clr-namespace:modular_daemon.Localization"
         mc:Ignorable="d"
         Title="modular-daemon" Height="350" Width="525" Closing="WindowClosing">
     <Grid>
@@ -28,21 +29,21 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <ToolBar Grid.Row="0" >
-                            <Button Height="24" VerticalAlignment="Top" Width="75" Click="Button_Click" Focusable="False">
-                                <TextBlock TextWrapping="Wrap" Text=" 重启本服务"/>
+                            <Button Height="24" VerticalAlignment="Center" Width="Auto" Click="Button_Click" Focusable="False" HorizontalAlignment="Center">
+                                <TextBlock TextWrapping="Wrap" Text="{x:Static loc:Strings.RestartService}" HorizontalAlignment="Center" VerticalAlignment="Center" x:Uid="RestartServiceButton"/>
                             </Button>
-                            <Label Content="日志" Margin="10,0,0,0"/>
-                            <TextBox Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Text="{Binding Log}" />
+                            <Label Content="{x:Static loc:Strings.Log}" Margin="10,0,0,0"/>
+                            <TextBox Height="24" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Text="{Binding Log}" Focusable="False" x:Uid="LogFilePath" />
                         </ToolBar>
-                        <TextBox Grid.Row="1" Text="{Binding Output, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False" TextWrapping="Wrap" TextChanged="TextBox_TextChanged" Focusable="False" />
+                        <TextBox Grid.Row="1" Text="{Binding Output, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" TextWrapping="Wrap" TextChanged="TextBox_TextChanged" />
                     </Grid>
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
-        <tb:TaskbarIcon IconSource="Resources/application.ico" DoubleClickCommand="{StaticResource NotifyIconCommand}">
+        <tb:TaskbarIcon DoubleClickCommand="{StaticResource NotifyIconCommand}">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Command="{StaticResource ExitAppCommand}" Header="退出"></MenuItem>
+                    <MenuItem Command="{StaticResource ExitAppCommand}" Header="{x:Static loc:Strings.Exit}" x:Uid="ExitAppMenuItem"></MenuItem>
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>

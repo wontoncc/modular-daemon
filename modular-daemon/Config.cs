@@ -24,10 +24,7 @@ namespace modular_daemon {
             foreach (var serviceElem in queryServices) {
                 var name = serviceElem.Attribute("name").Value.ToString();
                 var command = serviceElem.Element("command").Value.ToString();
-                string arguments = null;
-                if (serviceElem.Element("arguments") != null) {
-                    arguments = serviceElem.Element("arguments").Value.ToString();
-                }
+                var arguments = serviceElem.Element("arguments")?.Value.ToString();
                 var workingDirectory = serviceElem.Element("workingDirectory")?.Value.ToString();
                 var log = serviceElem.Element("log")?.Value.ToString();
                 config.Services.Add(new Service(name, command, arguments: arguments,

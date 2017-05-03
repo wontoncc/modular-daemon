@@ -13,23 +13,34 @@ namespace modular_daemon {
         private string command;
         private string arguments;
         private string dir;
+        private List<KeyValuePair<string, string>> env = new List<KeyValuePair<string, string>>();
         public string Log { get; set; }
         private StreamWriter logWriter = null;
         private FileStream logFile = null;
         Process process;
 
-        int outputBufferSize = 3000;
+        int outputBufferSize = 5000;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string Output { get; set; }
 
-        public Service(string name, string command, string arguments = null, string dir = null, string log = null, bool started = true) {
+        public Service(
+            string name,
+            string command,
+            string arguments = null,
+            string dir = null,
+            string log = null,
+            List<KeyValuePair<string, string>> env = null,
+            bool started = true) {
             this.Name = name;
             this.Output = "";
             this.command = command;
             this.dir = dir;
             this.arguments = arguments;
+            if (env != null) {
+                this.env = this.env.Concat(env).ToList();
+            }
             if (log != null) {
                 this.Log = log;
                 this.logFile = new FileStream(log, FileMode.Append);
@@ -71,6 +82,9 @@ namespace modular_daemon {
             this.process.StartInfo.FileName = this.command;
             this.process.StartInfo.Arguments = this.arguments;
             this.process.StartInfo.WorkingDirectory = this.dir;
+            foreach (var p in this.env) {
+                this.process.StartInfo.EnvironmentVariables.Add(p.Key, p.Value);
+            }
 
             this.process.ErrorDataReceived += new DataReceivedEventHandler((s, e) => {
                 this.PushOutput(e.Data + Environment.NewLine);

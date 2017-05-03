@@ -27,9 +27,18 @@ namespace modular_daemon {
                 var arguments = serviceElem.Element("arguments")?.Value.ToString();
                 var workingDirectory = serviceElem.Element("workingDirectory")?.Value.ToString();
                 var log = serviceElem.Element("log")?.Value.ToString();
+
+                var environmentVariables = new List<KeyValuePair<string, string>>();
+                if (serviceElem.Element("environment") != null) {
+                    var queryEnvironmentVariables = from v in serviceElem.Element("environment").Elements("variable")
+                                               select new KeyValuePair<string, string>(v.Attribute("name").Value, v.Value);
+                    environmentVariables = environmentVariables.Concat(queryEnvironmentVariables.ToList()).ToList();
+                }
+
                 config.Services.Add(new Service(name, command, arguments: arguments,
                     dir: workingDirectory,
-                    log: log));
+                    log: log,
+                    env: environmentVariables));
             }
 
             return config;

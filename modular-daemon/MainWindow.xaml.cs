@@ -44,7 +44,13 @@ namespace modular_daemon {
     /// </summary>
     public partial class MainWindow : Window {
         public MainWindow() {
-            var config = Config.Load(@"config.xml");
+            string[] args = Environment.GetCommandLineArgs();
+            string configPath = "config.xml";
+            if (args.Length > 1) {
+                configPath = args[1].Contains("config") ? args[1].Split('=')[1] : configPath;
+            }
+
+            var config = Config.Load(configPath);
             this.DataContext = config.Services;
             this.Title = config.Title;
 

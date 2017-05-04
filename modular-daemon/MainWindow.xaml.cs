@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Hardcodet.Wpf.TaskbarNotification;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -45,7 +47,7 @@ namespace modular_daemon {
     public partial class MainWindow : Window {
         public MainWindow() {
             string[] args = Environment.GetCommandLineArgs();
-            string configPath = "config.xml";
+            string configPath = @"config.xml";
             if (args.Length > 1) {
                 configPath = args[1].Contains("config") ? args[1].Split('=')[1] : configPath;
             }

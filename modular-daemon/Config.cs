@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Xml.Linq;
 
 namespace modular_daemon {
@@ -11,9 +13,13 @@ namespace modular_daemon {
         public List<Service> Services;
 
         public static Config Load(string filename) {
-            var config = new Config() {
-                xml = XDocument.Load(@"config.xml")
-            };
+            var config = new Config();
+            try {
+                config.xml = XDocument.Load(filename);
+            } catch (FileNotFoundException e) {
+                MessageBox.Show(Localization.Strings.ConfigNotFound);
+                Environment.Exit(1);
+            }
             var queryTitle = from t in config.xml.Root.Element("application").Element("title").Value
                              select t;
             config.Title = new string(queryTitle.ToArray());

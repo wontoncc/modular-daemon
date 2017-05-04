@@ -61,6 +61,24 @@ namespace modular_daemon.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error in service configuration!.
+        /// </summary>
+        public static string ConfigError {
+            get {
+                return ResourceManager.GetString("ConfigError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Config file not found!.
+        /// </summary>
+        public static string ConfigNotFound {
+            get {
+                return ResourceManager.GetString("ConfigNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exit.
         /// </summary>
         public static string Exit {

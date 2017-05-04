@@ -6,6 +6,7 @@
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:modular_daemon"
         xmlns:loc="clr-namespace:modular_daemon.Localization"
+        xmlns:p="clr-namespace:modular_daemon.Properties"
         mc:Ignorable="d"
         Title="modular-daemon" Height="350" Width="525" Closing="WindowClosing">
     <Grid>
@@ -40,7 +41,7 @@
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>
-        <tb:TaskbarIcon DoubleClickCommand="{StaticResource NotifyIconCommand}">
+        <tb:TaskbarIcon  IconSource="Resources/apps.white.ico" DoubleClickCommand="{StaticResource NotifyIconCommand}">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Command="{StaticResource ExitAppCommand}" Header="{x:Static loc:Strings.Exit}" x:Uid="ExitAppMenuItem"></MenuItem>

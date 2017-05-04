@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.ComponentModel;
 using System.Management;
 using System.IO;
+using System.Windows;
 
 namespace modular_daemon {
     public class Service : INotifyPropertyChanged {
@@ -93,9 +94,14 @@ namespace modular_daemon {
                 this.PushOutput(e.Data + Environment.NewLine);
             });
 
-            this.process.Start();
-            this.process.BeginOutputReadLine();
-            this.process.BeginErrorReadLine();
+            try {
+                this.process.Start();
+                this.process.BeginOutputReadLine();
+                this.process.BeginErrorReadLine();
+            } catch (Exception e) {
+                this.PushOutput(Localization.Strings.ConfigError);
+                return;
+            }
         }
         public void Restart () {
             this.EndProcess();
@@ -113,11 +119,13 @@ namespace modular_daemon {
         }
 
         public void EndProcess () {
-            if (!this.process.HasExited) {
-                this.process.CancelErrorRead();
-                this.process.CancelOutputRead();
-                KillProcessAndChildren(this.process.Id);
-            }
+            try {
+                if (!this.process.HasExited) {
+                    this.process.CancelErrorRead();
+                    this.process.CancelOutputRead();
+                    KillProcessAndChildren(this.process.Id);
+                }
+            } catch (InvalidOperationException e) { }
         }
 
         public void Close () {

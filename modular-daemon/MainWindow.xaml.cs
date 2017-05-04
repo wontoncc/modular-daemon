@@ -54,9 +54,9 @@ namespace modular_daemon {
 
             var config = Config.Load(configPath);
             this.DataContext = config.Services;
-            this.Title = config.Title;
 
             InitializeComponent();
+            this.Title = config.Title;
         }
 
         private void WindowClosing(object sender, System.ComponentModel.CancelEventArgs e) {
